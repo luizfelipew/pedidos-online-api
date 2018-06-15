@@ -25,6 +25,7 @@ export class Server {
                 })
                 //configurando o query parser para obter os parametros da query
                 this.application.use(restify.plugins.queryParser())
+                this.application.use(restify.plugins.bodyParser())
 
                 //routes
                 for(let rourter of routers){

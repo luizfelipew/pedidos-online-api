@@ -5,7 +5,7 @@ import {User} from './users.model'
 class UsersRouter extends Router {
     
     applyRoutes(application: restify.Server){
-        
+
         application.get('/users', (req, resp, next) => {
             User.find().then(users => {
                 resp.json(users)
@@ -14,13 +14,22 @@ class UsersRouter extends Router {
         })
 
         application.get('/users/:id', (req, resp, next) => {
-            User.finrById(req.params.id).then(user => {
+            User.findById(req.params.id).then(user => {
                 if(user){
                     resp.json(user)
                     return next()
                 }
 
                 resp.send(404)
+                return next()
+            })
+        })
+
+        application.post('/users', (req, resp, next) => {
+            let user: any = new User(req.body)
+            user.save().then(user => {
+                user.password = undefined
+                resp.json(user)
                 return next()
             })
         })

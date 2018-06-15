@@ -11,12 +11,20 @@ class UsersRouter extends router_1.Router {
             });
         });
         application.get('/users/:id', (req, resp, next) => {
-            users_model_1.User.finrById(req.params.id).then(user => {
+            users_model_1.User.findById(req.params.id).then(user => {
                 if (user) {
                     resp.json(user);
                     return next();
                 }
                 resp.send(404);
+                return next();
+            });
+        });
+        application.post('/users', (req, resp, next) => {
+            let user = new users_model_1.User(req.body);
+            user.save().then(user => {
+                user.password = undefined;
+                resp.json(user);
                 return next();
             });
         });
