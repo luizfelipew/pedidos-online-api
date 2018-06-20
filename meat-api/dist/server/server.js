@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const restify = require("restify");
 const mongoose = require("mongoose");
 const environment_1 = require("../common/environment");
+const merge_patch_parser_1 = require("../server/merge-patch.parser");
 class Server {
     initializeDb() {
         mongoose.Promise = global.Promise;
@@ -20,6 +21,7 @@ class Server {
                 //configurando o query parser para obter os parametros da query
                 this.application.use(restify.plugins.queryParser());
                 this.application.use(restify.plugins.bodyParser());
+                this.application.use(merge_patch_parser_1.mergePatchBodyParser);
                 //routes
                 for (let rourter of routers) {
                     rourter.applyRoutes(this.application);

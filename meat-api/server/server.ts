@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose'
 
 import {environment} from '../common/environment'
 import {Router} from '../common/router'
+import {mergePatchBodyParser} from '../server/merge-patch.parser'
 
 export class Server {
     
@@ -26,7 +27,9 @@ export class Server {
                 //configurando o query parser para obter os parametros da query
                 this.application.use(restify.plugins.queryParser())
                 this.application.use(restify.plugins.bodyParser())
+                this.application.use(mergePatchBodyParser)
 
+                
                 //routes
                 for(let rourter of routers){
                     rourter.applyRoutes(this.application)
